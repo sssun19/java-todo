@@ -2,7 +2,7 @@ package org.example.web;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.model.TodoEntity;
+import org.example.model.TodoModel;
 import org.example.model.TodoRequest;
 import org.example.model.TodoResponse;
 import org.example.service.TodoService;
@@ -35,7 +35,7 @@ public class TodoController {
         if (ObjectUtils.isEmpty(request.getCompleted()))
             request.setCompleted(false);
 
-        TodoEntity result = this.service.add(request);
+        TodoModel result = this.service.add(request);
 
         return ResponseEntity.ok(new TodoResponse(result));
     }
@@ -43,14 +43,14 @@ public class TodoController {
     @GetMapping("{id}")
     public ResponseEntity<TodoResponse> readOne(@PathVariable Long id) {
         log.info("READ ONE");
-        TodoEntity result = this.service.searchById(id);
+        TodoModel result = this.service.searchById(id);
         return ResponseEntity.ok(new TodoResponse(result));
     }
 
     @GetMapping
     public ResponseEntity<List<TodoResponse>> readAll() {
         log.info("READ ALL");
-        List<TodoEntity> list = this.service.searchAll();
+        List<TodoModel> list = this.service.searchAll();
         List<TodoResponse> response = list.stream().map(TodoResponse::new)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(response);
@@ -60,7 +60,7 @@ public class TodoController {
     public ResponseEntity<TodoResponse> update(@PathVariable Long id, @RequestBody TodoRequest request) {
         log.info("UPDATE");
 
-        TodoEntity result = this.service.updateById(id, request);
+        TodoModel result = this.service.updateById(id, request);
 
         return ResponseEntity.ok(new TodoResponse(result));
     }
